@@ -32,6 +32,7 @@ public class CamisetaController {
         Categoria categoria = categoriaRepository.findById(data.categoria_id())
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
+
         Camiseta camisetaNova = new Camiseta(data, categoria);
         camisetaRepository.save(camisetaNova);
     }
