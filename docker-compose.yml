@@ -1,0 +1,31 @@
+services:
+  postgres:
+	container_name: postgres
+    image: postgres
+    volumes:
+      - ./init.sql/create-db.sql:/docker-entrypoint-initdb.d/create-db.sql
+      - ./init.sql/default-values.sql:/docker-entrypoint-initdb.d/default-values.sql
+    environment:
+      POSTGRES_USERNAME: "postgres"
+      POSTGRES_PASSWORD: "adm123"
+    ports:
+      - "5432:5432"
+	  
+      backend:
+    environment:
+      PG_USER: postgres
+      PG_HOST: postgres
+      PG_PASSWORD: "adm123"
+      PG_PORT: 5432
+    build:
+      context: ./CamisetaProjectBackEnd
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./CamisetaProjectFrontEnd
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
