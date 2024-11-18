@@ -1,29 +1,32 @@
+version: "3.9"
 services:
   postgres:
-	container_name: postgres
-    image: postgres
+    container_name: postgres
+    image: postgres:13
+    env_file: .env
     volumes:
-      - ./init.sql/create-db.sql:/docker-entrypoint-initdb.d/create-db.sql
-      - ./init.sql/default-values.sql:/docker-entrypoint-initdb.d/default-values.sql
-    environment:
-      POSTGRES_USERNAME: "postgres"
-      POSTGRES_PASSWORD: "adm123"
+      - ./CamisetaProjectBackEnd/AnuncioCamisetaProject/init.sql/create-db.sql:/docker-entrypoint-initdb.d/create-db.sql
+      - ./CamisetaProjectBackEnd/AnuncioCamisetaProject/init.sql/default-values.sql:/docker-entrypoint-initdb.d/default-values.sql
     ports:
       - "5432:5432"
-	  
-      backend:
+
+  backend:
+    container_name: backend
+    build:
+      context: ./CamisetaProjectBackEnd/AnuncioCamisetaProject
+      dockerfile: Dockerfile
     environment:
       PG_USER: postgres
       PG_HOST: postgres
-      PG_PASSWORD: "adm123"
+      PG_PASSWORD: adm123
       PG_PORT: 5432
-    build:
-      context: ./CamisetaProjectBackEnd
-      dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    depends_on:
+      - postgres
 
   frontend:
+    container_name: frontend
     build:
       context: ./CamisetaProjectFrontEnd
       dockerfile: Dockerfile
