@@ -4,6 +4,7 @@ COPY src /app/src
 COPY pom.xml /app
 
 WORKDIR /app
+COPY ./Anuncio-de-Camisetas-CRUD/CamisetaProjectBackEnd/AnuncioCamisetaProject /app
 RUN mvn clean install -DskipTests
 
 FROM eclipse-temurin:21-jdk
